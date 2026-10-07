@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXUS CAM</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo">N</div><div><h1>NEXUS CAM</h1><small>INTELLIGENT REMOTE PAN / TILT</small></div></div>
+  <div class="topStatus"><span id="onlineDot"></span><span id="statusText">CONNECTING</span></div>
+</header>
+
+<div class="layout">
+<main>
+  <section class="card cameraCard">
+    <div class="cardTitle"><b>LIVE VIEW</b><div><button id="fullscreen">FULL SCREEN</button><button id="camSelect">USB CAMERA</button></div></div>
+    <div class="camera">
+      <img id="serverFeed" src="/camera.mjpeg" alt="Live camera">
+      <video id="browserCam" autoplay playsinline muted></video>
+      <div class="reticle"></div>
+      <div id="targetBox"></div>
+      <div id="targetLabel"></div>
+      <div class="camBadge">NEXUS VISION</div>
+    </div>
+    <div class="cameraFooter">
+      <div><span class="dot green"></span>VIDEO</div>
+      <div id="targetState">NO TARGET LOCKED</div>
+      <div id="fps">-- FPS</div>
+    </div>
+  </section>
+
+  <section class="card aiCard">
+    <div class="cardTitle"><b>AI + VOICE</b><span id="aiStatus">AI OFF</span></div>
+    <div class="voiceRow">
+      <button id="listen" class="voiceBtn">🎙 LISTEN</button>
+      <button id="speakTest">🔊 TEST VOICE</button>
+      <button id="aiToggle">AI OFF</button>
+    </div>
+    <div class="commandBox"><span>VOICE COMMAND</span><strong id="heard">Say: “Nexus, lock onto the red cup.”</strong></div>
+    <div class="assistant"><div class="assistantIcon">N</div><div><b>NEXUS</b><p id="assistantText">System ready. Tell me what benign object you want me to find.</p></div></div>
+    <div class="targetInfo">
+      <div><span>TARGET</span><b id="targetName">None</b></div>
+      <div><span>CONFIDENCE</span><b id="confidence">--</b></div>
+      <div><span>STATUS</span><b id="lockStatus">SEARCHING</b></div>
+    </div>
+  </section>
+
+  <section class="card controlsCard">
+    <div class="cardTitle"><b>PAN / TILT</b><span>MANUAL CONTROL</span></div>
+    <div class="controlLayout">
+      <div class="dpad">
+        <button data-cmd="up">▲</button>
+        <div><button data-cmd="left">◀</button><button id="stop" class="stop">STOP</button><button data-cmd="right">▶</button></div>
+        <button data-cmd="down">▼</button>
+      </div>
+      <div class="sliders">
+        <label>PAN/TILT SPEED <b id="speedNum">5</b></label>
+        <input id="speed" type="range" min="1" max="10" value="5">
+        <div class="angles"><span>PAN <b id="panAngle">0°</b></span><span>TILT <b id="tiltAngle">90°</b></span></div>
+        <button id="unlock" class="wide">UNLOCK TARGET</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<aside>
+  <section class="card connection">
+    <div class="cardTitle"><b>CONNECTION</b></div>
+    <div class="kv"><span>PC</span><b id="pcIp">--</b></div>
+    <div class="kv"><span>NANO ESP32</span><b id="nanoIp">--</b></div>
+    <div class="kv"><span>CAMERA</span><b id="cameraState">--</b></div>
+    <div class="kv"><span>JOYSTICK</span><b id="gamepadState">CHECKING</b></div>
+  </section>
+  <section class="card presets">
+    <div class="cardTitle"><b>PRESETS</b></div>
+    <button data-cmd="center">CENTER</button><button data-cmd="left">LEFT</button><button data-cmd="right">RIGHT</button>
+    <button data-cmd="up">UP</button><button data-cmd="down">DOWN</button>
+  </section>
+  <section class="card help">
+    <div class="cardTitle"><b>VOICE EXAMPLES</b></div>
+    <p>“Nexus, lock onto the red cup.”</p>
+    <p>“Find the blue bottle.”</p>
+    <p>“Lock onto the tennis ball.”</p>
+    <p>“Unlock.”</p>
+    <p>“Stop.”</p>
+    <small>Object lock is intended for benign objects and markers only.</small>
+  </section>
+  <button id="estop" class="bigStop">EMERGENCY STOP</button>
+</aside>
+</div>
+<footer>Physical E-stop remains the primary safety control.</footer>
+<script src="app.js"></script>
+</body></html>

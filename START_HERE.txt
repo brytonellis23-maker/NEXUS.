@@ -1,0 +1,95 @@
+NEXUS CAM - ORIGINAL INTERFACE + UPGRADED AI/VOICE
+
+THIS PACKAGE CONTAINS
+server/server.py          PC server, USB camera stream, Nano bridge
+server/requirements.txt
+web/index.html            Main original-style control interface
+web/style.css             Dark/blue interface
+web/app.js                AI, voice, object/color target parsing, manual controls
+web/phone.html            Mobile control page
+nano/NEXUS_CAM_NANO.ino   Nano ESP32 firmware
+docs/START_HERE.txt       This guide
+
+1. NANO
+Open nano/NEXUS_CAM_NANO.ino in Arduino IDE.
+Enter your Wi-Fi name/password.
+Select Arduino Nano ESP32.
+Upload.
+Open Serial Monitor at 115200.
+Write down the NEXUS IP address.
+
+2. PC
+Install Python 3.
+Open Command Prompt in the NEXUS_CAM_COMPLETE/server folder.
+Run:
+  pip install -r requirements.txt
+
+Then run:
+  set NEXUS_NANO_IP=YOUR_NANO_IP
+  python server.py
+
+Open:
+  http://localhost:8080
+
+3. PHONE
+Put the phone on the same Wi-Fi.
+Find the PC IP shown by the server.
+Open:
+  http://PC_IP:8080/phone.html
+
+4. CAMERA
+Plug the separate USB webcam into the PC.
+The main page automatically uses the PC camera stream.
+You can also click USB CAMERA to use browser camera access.
+
+5. VOICE
+Click LISTEN.
+Examples:
+  "Nexus, lock onto the red cup."
+  "Nexus, find the blue bottle."
+  "Lock onto the tennis ball."
+  "Unlock."
+  "Stop."
+  "Center."
+The system speaks responses using the browser's speech engine.
+
+6. AI TARGET LOCK
+The included browser AI uses COCO-SSD and a color heuristic.
+It recognizes supported everyday object classes and attempts color matching.
+Say the object and optional color.
+If found, NEXUS centers the selected benign object by commanding pan/tilt.
+
+7. JOYSTICK
+Your Gsycle 8-way joystick uses digital microswitches, not analog X/Y potentiometers.
+It connects to the Reyann USB encoder.
+Use the direction/button inputs marked on YOUR encoder.
+The PC app also supports standard USB gamepads exposed through the browser Gamepad API.
+If your encoder appears as keyboard HID instead, use the on-screen controls or add keyboard mapping.
+
+8. ELECTRONICS PIN PLAN
+TMC2209:
+  VS -> switched +12V
+  GND -> common ground
+  VIO -> Nano 3.3V
+  STEP -> D2
+  DIR -> D3
+  EN -> D8
+  A1/A2/B1/B2 -> NEMA17 coil pairs
+
+DS3218:
+  signal -> D9
+  positive -> verified 6.0V buck output
+  ground -> common ground
+
+AS5600:
+  3.3V -> 3.3V
+  GND -> GND
+  SDA -> Nano SDA
+  SCL -> Nano SCL
+Verify the exact breakout labels before powering.
+
+9. IMPORTANT SAFETY
+The physical E-stop must remain wired independently of the software.
+The rocket tube/holder is passive only.
+Do not add ignition or launch control to this system.
+AI lock is intentionally limited in the software to benign object/marker tracking.
